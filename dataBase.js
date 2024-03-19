@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 const dB = "movieBooking";
+const passportLocalMongoose = require("passport-local-mongoose");
 mongoose
   .connect(`mongodb://127.0.0.1:27017/${dB}`)
   .then(() => {
@@ -102,20 +103,20 @@ const Movie = mongoose.model("Movie", movieSchema);
 // const Movie=mongoose.model("Movie",movieSchema);
 
 const userSchema = new Schema({
-  name: {
+  username: {
     type: String,
     trim: true,
     minLength: [5, "name must have minimum 5 letters"],
     maxLength: [50, "name must have maximal 20 letters"],
     required: true,
   },
-  password: {
-    type: String,
-    trim: true,
-    minLength: [8, "password must have minimum 8 letters"],
-    maxLength: [20, "password must have maximal 20 letters"],
-    required: true,
-  },
+  // password: {
+  //   type: String,
+  //   trim: true,
+  //   minLength: [8, "password must have minimum 8 letters"],
+  //   maxLength: [20, "password must have maximal 20 letters"],
+  //   required: true,
+  // },
   mail: {
     type: String,
     trim: true,
@@ -124,6 +125,7 @@ const userSchema = new Schema({
   favMovies: [{ type: Schema.Types.ObjectId, ref: "Movie" }],
   comments: [{ type: Schema.Types.ObjectId, ref: "Review" }],
 });
+userSchema.plugin(passportLocalMongoose);
 userSchema.post("findOneAndDelete", async function (user) {
   if (user.comments.length) {
     const amount = await Review.deleteMany({ _id: { $in: user.comments } });

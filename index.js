@@ -30,8 +30,9 @@ const {
 // const { searcherValidator } = require("./public/scripts/ErrorApp.js");
 const getData = require("./views/seeds/Movies__seeds.js");
 const session = require("express-session");
-
 const flash = require("connect-flash");
+const passport = require("passport");
+const passportLocal = require("passport-local");
 // const methodOverride = require("method-override");
 // let favourites_option = false;
 let serials = [];
@@ -44,11 +45,22 @@ const checkingData = functions.checkingData;
 // const searchReplicatedByName = functions.searchReplicatedByName;
 server.use(
   session({
+    name: "serieSearcherSession",
     secret: "alongsecret aside",
     resave: false,
     saveUninitialized: true,
+    cookie: {
+      httpOnly: true,
+      expires: Date.now() + 1000 * 60 * 60 * 24 * 7, //for a week
+      maxAge: 1000 * 60 * 60 * 24 * 7,
+    },
   })
 );
+server.use(passport.initialize());
+server.use(passport.session());
+passport.use(new passportLocal(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 server.use(flash());
 server.engine("ejs", ejsMate);
 server.set("view engine", "ejs");
@@ -102,8 +114,6 @@ server.get("/home", (req, res) => {
 // server.use("/user",userRouter);
 server.get("/user", (req, res) => {
   const path = req.path;
-  // console.log(path);
-  const message = "";
   res.render("forms", {
     myAccount,
     countries,
@@ -118,7 +128,7 @@ server.get(
   asyncWrap(async (req, res, next) => {
     const { id } = req.params;
     // res.send(`name: ${name}, password: ${userpassword} serial id: ${id}`);
-    const [owner] = await User.find({ name, password: userpassword });
+    const [owner] = await User.find({ _id: req.user._id });
     const data = req.data;
     const [serial] = data.filter((element) => {
       // console.log(
@@ -161,11 +171,9 @@ server.get(
   asyncWrap(async (req, res, next) => {
     // console.log(`params: ${req.params.name}`);
     name = req.params.name;
-    if (userpassword && name) {
-      const password = userpassword;
-
+    if (req.isAuthenticated()) {
       // console.log(`password: ${password}`);
-      const [userData] = await User.find({ name, password });
+      const [userData] = await User.find({ _id: req.user._id });
       if (userData) {
         const data = req.data;
         myAccount = true;
@@ -173,7 +181,7 @@ server.get(
         res.render(`index`, {
           countries,
           genres,
-          fullName: userData.name,
+          fullName: userData.username,
           data,
           userData,
           myAccount,
@@ -200,21 +208,24 @@ server.get(
 server.post(
   "/user",
   userFormValidator,
+  passport.authenticate("local", {
+    failureFlash: true,
+    failureRedirect: "/user",
+  }),
   asyncWrap(async (req, res, next) => {
-    const { user } = req.body;
-    const { password, username } = user;
+    const { password, username } = req.body;
     // if (password && username) {
-    const [userExist] = await User.find({ name: username, password });
+    const [userExist] = await User.find({ _id: req.user._id });
     // userExist
     //   ? console.log("user Exist: ", userExist.name)
     //   : console.log("such user doesnt exist");
     if (userExist) {
       // req.name = userExist.name;
-      name = userExist.name;
-      userpassword = userExist.password;
+      name = userExist.username;
       // console.log(`name ${req.name} password: ${userpassword}`);
       req.flash("success", "Succesfully logged in");
-      res.redirect(`/user/${userExist.name}`);
+
+      res.redirect(`/user/${userExist.username}`);
     } else {
       throw new ErrorApp("your userdata are incorrect", 401, "forms");
     }
@@ -238,14 +249,14 @@ server.post(
 server.get(
   "/myAccount",
   asyncWrap(async (req, res, next) => {
-    if (userpassword && name) {
+    if (req.isAuthenticated()) {
       // const password = userpassword;
       // const data = req.data;
       // const [userData] = await User.find({ name, password:userpassword });
       // console.log(`data: ${userData}`);
       // res.send(`here will be placed your favourites ${name} :) just await!`);
       //
-      const [owner] = await User.find({ name, password: userpassword });
+      const [owner] = await User.find({ _id: req.user._id });
       if (owner) {
         // console.log(`owner: ${owner}`);
         let favourites;
@@ -320,22 +331,24 @@ server.get("/myAccount/settings", (req, res) => {
   } else {
   }
 });
-server.get("/myAccount/logout", (req, res) => {
+server.post("/myAccount/logout", (req, res) => {
   initialData();
-  console.log("log out successfully");
-  res.redirect("/home");
+  req.logOut((err) => {
+    if (err) return next(err);
+    console.log("log out successfully");
+    req.flash("success", "You have successfull logged out ");
+    res.redirect("/home");
+  });
 });
 server.get(
   "/myAccount/remove",
   asyncWrap(async (req, res) => {
-    if (myAccount) {
+    if (req.isAuthenticated()) {
       const removed = await User.findOneAndDelete({
-        name,
-        password: userpassword,
+        _id: req.user._id,
       });
-      console.log(`removed account ${removed}`);
-      const data = req.data;
-      success = `Account with name ${removed.name} has been deleted succesfully`;
+      // console.log(`removed account ${removed}`);
+      req.flash("success", `Your account has been deleted succesfully`);
       initialData();
       res.redirect("/home");
     } else {
@@ -346,8 +359,9 @@ server.get(
 server.get(
   "/myAccount/update",
   asyncWrap(async (req, res) => {
-    const [user] = await User.find({ name, password: userpassword });
-    if (user) {
+    if (req.isAuthenticated()) {
+      const [user] = await User.find({ _id: req.user._id });
+
       res.render("forms", {
         user,
         myAccount,
@@ -365,12 +379,15 @@ server.get(
 server.patch(
   "/myAccount/update",
   asyncWrap(async (req, res) => {
-    const { user } = req.body;
-    const { username, password, mail } = user;
-    const [updated] = await User.find({ name, password: userpassword });
+    const { username, password, mail } = req.body;
+    const [updated] = await User.find({ _id: req.user._id });
     if (updated) {
       updated.name = username ? username : updated.name;
-      updated.password = password ? password : updated.password;
+      password
+        ? updated.setPassword(password, () => {
+            updated.save();
+          })
+        : "";
       updated.mail = mail ? mail : updated.mail;
       await updated.save();
       myAccount = false;
@@ -400,12 +417,11 @@ server.patch(
 server.get(
   "/myAccount/comments",
   asyncWrap(async (req, res) => {
-    if (userpassword && name) {
+    if (req.isAuthenticated()) {
       // const [user] = await User.find({ name, password: userpassword });
       const movies = [];
       const [{ comments }] = await User.find({
-        name,
-        password: userpassword,
+        _id: req.user._id,
       }).populate("comments");
 
       // const [user] = await User.find({ name, password: userpassword });
@@ -449,7 +465,7 @@ server.get(
   "/myAccount/comments/:id/update",
   asyncWrap(async (req, res) => {
     const { id } = req.params;
-    if (myAccount) {
+    if (req.isAuthenticated()) {
       const comment = await Review.findById(id);
       res.render("forms", {
         comment,
@@ -483,13 +499,13 @@ server.post(
 server.delete(
   "/myAccount/comments/:id/delete",
   asyncWrap(async (req, res) => {
-    if (myAccount) {
+    if (req.isAuthenticated()) {
       const { id } = req.params;
       const user = await User.findOneAndUpdate(
         { comments: { $in: id } },
         { $pull: { comments: id } }
       );
-      const comment = await Review.findByIdAndDelete(id);
+      await Review.findByIdAndDelete(id);
       await user.save();
       // console.log(`comment: ${comment}user: ${user}`);
       res.redirect("/myAccount/comments");
@@ -502,13 +518,13 @@ server.delete(
 server.get(
   "/myAccount/favourites/:id",
   asyncWrap(async (req, res) => {
-    if (myAccount) {
+    if (req.isAuthenticated()) {
       const data = req.data;
       const [serial] = data.filter((simple) => {
         return simple._id == req.params.id;
       });
 
-      const [userData] = await User.find({ name, password: userpassword });
+      const [userData] = await User.find({ _id: req.user._id });
 
       if (serial) {
         const isFav = userData.favMovies.includes(serial._id);
@@ -538,11 +554,11 @@ server.get(
 server.get(
   "/myAccount/favourites/delete/:id",
   asyncWrap(async (req, res) => {
-    if (userpassword && name) {
-      const data = req.data;
-      const [serial] = data.filter((simple) => simple._id == req.params.id);
+    if (req.isAuthenticated()) {
+      // const data = req.data;
+      // const [serial] = data.filter((simple) => simple._id == req.params.id);
       // const [{favMovies:userFav}] = await User.find({ name, password: userpassword }).populate("favMovies");
-      const [owner] = await User.find({ name, password: userpassword });
+      const [owner] = await User.find({ _id: req.user._id });
       if (owner) {
         const index = owner.favMovies.findIndex((fav) => fav == req.params.id);
         index >= 0 ? owner.favMovies.splice(index, 1) : "";
@@ -576,36 +592,25 @@ server.post(
   registerFormValidator,
   asyncWrap(async (req, res) => {
     // after checking register form data:
-    const { user } = req.body;
-    const { password, username, mail } = user;
-    const [exist] = await User.find({ name: username, password });
-    if (exist) {
-      throw new ErrorApp(
-        "User with these data exist try to log in",
-        500,
-        "forms"
-      );
-    }
+    const { password, username, mail } = req.body;
+    // const [exist] = await User.find({ name: username, password });
+    // if (exist) {
+    //   throw new ErrorApp(
+    //     "User with these data exist try to log in",
+    //     500,
+    //     "forms"
+    //   );
+    // } <-- from now on passport checkes if user existes in db
     const newUser = new User({
-      name: username,
-      password,
+      username,
       mail,
-      favMovies: [],
-      comments: [],
     });
+    await User.register(newUser, password);
     await newUser.save();
-    console.log(
-      `user with data: password ${password} username: ${username} mail: ${mail} added to db`
-    );
+    // console.log(
+    //   `user with data: password ${password} username: ${username} mail: ${mail} added to db`
+    // );
 
-    // res.render("forms", {
-    //   myAccount,
-    //   countries,
-    //   genres,
-    //   path,
-    //   err: "",
-    //   success: "user succesfully Added",
-    // });
     req.flash("success", "user succesfully Added");
     res.redirect("/home");
   })
@@ -632,7 +637,7 @@ server.get(
         });
       });
       if (myAccount) {
-        const [userData] = await User.find({ name, password: userpassword });
+        const [userData] = await User.find({ _id: req.user._id });
         isFav = userData.favMovies.includes(serial._id);
       }
       res.render("simple", {
@@ -674,35 +679,26 @@ server.post(
   "/serie/:id/addComment",
   reviewValidator,
   asyncWrap(async (req, res) => {
-    // const {id,owner}
-    const { id } = req.params;
+    if (req.isAuthenticated()) {
+      // const {id,owner}
+      const { id } = req.params;
 
-    const { note, body } = req.body;
+      const { note, body } = req.body;
+      const serial = await Movie.findById(id);
+      // const creator = await User.findById(owner);
+      const [creator] = await User.find({ _id: req.user._id });
 
-    const serial = await Movie.findById(id);
-    // const creator = await User.findById(owner);
-    const [creator] = await User.find({ name, password: userpassword });
-
-    if (serial && creator) {
       const newReview = new Review({ user: creator, note, body, serial });
       creator.comments.push(newReview);
       serial.reviews.push(newReview);
       await creator.save();
       await serial.save();
       await newReview.save();
-      const data = req.data;
-      // res.render("index", {
-      //   data,
-      //   genres,
-      //   countries,
-      //   myAccount,
-      //   err: "",
-      //   success: "Your comment was added",
-      // });
+
       req.flash("success", "Your comment was added");
       res.redirect("/myAccount");
     } else {
-      throw new ErrorApp("something get wrong", 500, "index");
+      throw new ErrorApp("Something went wrong", 500, "index");
     }
   })
 );

@@ -52,11 +52,9 @@ module.exports.asyncWrap = asyncWrap;
 
 module.exports.registerFormValidator = (req, res, next) => {
   const userSchema = Joi.object({
-    user: Joi.object({
-      username: Joi.string().min(5).max(50).trim().required(),
-      password: Joi.string().min(8).max(20).trim().required(),
-      mail: Joi.string().trim().email().required(),
-    }).required(),
+    username: Joi.string().min(5).max(50).trim().required(),
+    password: Joi.string().min(8).max(20).trim().required(),
+    mail: Joi.string().trim().email().required(),
   });
   const { error } = userSchema.validate(req.body);
   if (error) {
@@ -78,10 +76,8 @@ module.exports.registerFormValidator = (req, res, next) => {
 
 module.exports.userFormValidator = (req, res, next) => {
   const userSchema = Joi.object({
-    user: Joi.object({
-      username: Joi.string().min(5).max(50).trim().required(),
-      password: Joi.string().min(8).max(20).trim().required(),
-    }).required(),
+    username: Joi.string().min(5).max(50).trim().required(),
+    password: Joi.string().min(8).max(20).trim().required(),
   });
   const { error } = userSchema.validate(req.body);
   if (error) {

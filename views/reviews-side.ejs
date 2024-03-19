@@ -46,7 +46,7 @@
   <div class="reviews">
     <% comments.forEach((comment,index)=>{ %>
     <div class="review-box">
-      <p class="review-box__user"><%=users[index].user.name%></p>
+      <p class="review-box__user"><%=users[index].user.username%></p>
       <p class="review-box__note"><%=comment.note %>/10</p>
       <p class="review-box__comment"><%= comment.body%></p>
     </div>

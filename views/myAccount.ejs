@@ -36,7 +36,14 @@
           />
           <input type="submit" value="search" class="form-inline__button" />
         </form>
-        <a href="/myAccount/logout" class="button button--blue">log Out</a>
+        <form action="/myAccount/logout" method="post" class="form-inline">
+          <input
+            type="submit"
+            value="log out"
+            class="form-inline__button button button--blue"
+          />
+        </form>
+        <!-- <a href="/myAccount/logout" class="button button--blue">log Out</a> -->
       </div>
     </div>
     <div class="myAccount__mainPanel">
@@ -46,7 +53,7 @@
       <div class="settings">
         <a href="/myAccount/update" class="button--blue">update data</a>
         <a href="/myAccount/remove" class="button--red">remove account</a>
-        // <a href="#" class="button--green">set details</a>
+        <%# <a href="#" class="button--green">set details</a> %>
       </div>
       <%}else if(comments){ comments.forEach((comment,index)=>{ %>
       <div class="comment">
