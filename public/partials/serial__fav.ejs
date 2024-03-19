@@ -1,0 +1,63 @@
+<div class="serial">
+  <p class="serial__title"><%= serial.name %></p>
+  <div class="blockA">
+    <div class="blockA__details">
+      <p><span class="--u-bigger">premiered: </span><%= serial.premiered%></p>
+      <%if(serial.ended){ %>
+      <p><span class="--u-bigger">ended: </span><%= serial.ended %></p>
+      <% }%>
+      <p><span class="--u-bigger">status: </span><%= serial.status %></p>
+      <p>
+        <span class="--u-bigger">rating: </span>
+        <% let text; const rate= Math.floor(serial.score*100); rate>100?
+        text=`HOT!! recommended by 100`:text=`recommended by ${rate}`; %> <%=
+        text %> % of viewers
+      </p>
+    </div>
+  </div>
+  <div class="image-box">
+    <img
+      src="<%= serial.image.medium %>"
+      alt="poster of <%= serial.name %>"
+      class="image-box--image"
+    />
+  </div>
+  <div class="blockB">
+    <p class="blockB__summary"><%- serial.summary %></p>
+    <div class="blockB__details">
+      <p>
+        <span class="--u-bigger">country: </span
+        ><a class="serial__link" href="/country/<%= serial.country %>"
+          ><%= serial.country%></a
+        >
+      </p>
+      <p><span class="--u-bigger">language: </span><%= serial.language %></p>
+      <p>
+        <span class="--u-bigger">genres:</span>
+        <% for(let g of serial.genres){ %>
+        <a class="serial__link" href="/genre/<%= g %>"><%= g %></a>
+        <% } %>
+      </p>
+    </div>
+  </div>
+  <div class="blockC">
+    <a class="button button--brown" href="/serie/<%=serial._id %>/comments"
+      >check reviews</a
+    >
+    <%if(myAccount){ %>
+    <a class="button button--green" href="/serie/<%=serial._id %>/addComment"
+      >Add Comment</a
+    >
+    <%if(isFav){ %>
+    <a
+      class="button button--red"
+      href="/myAccount/favourites/delete/<%= serial.id %>"
+      >Delete from favourite</a
+    >
+    <%}else{ %>
+    <a class="button button--blue" href="/user/favourite/<%= serial.id %>"
+      >Add To My Favourite</a
+    >
+    <%} %> <%}%>
+  </div>
+</div>

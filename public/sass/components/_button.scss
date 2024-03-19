@@ -1,0 +1,48 @@
+.button {
+  border-radius: 70px;
+  margin: 0 1rem;
+
+  text-transform: capitalize;
+  display: flex;
+  width: max-content;
+  justify-content: center;
+  align-items: center;
+  // font-size: calc(var(--main-font-size) - 0.5rem);
+  box-shadow: 3px 4px 0 black;
+  &:active {
+    box-shadow: 1px 2px 0 black;
+  }
+  &--green {
+    background-color: lightgreen;
+
+    color: darken($color-brown, 30%);
+    &:hover {
+      background-color: darken(lightgreen, 20%);
+      color: var(--color-brown);
+    }
+  }
+  &--blue {
+    background-color: lightseagreen;
+    color: $color-blue;
+    &:hover {
+      background-color: darken(lightseagreen, 10%);
+      color: lighten($color-blue, 20%);
+    }
+  }
+  &--red {
+    background-color: var(--color-red-shiny);
+    color: var(--color-red-dark);
+    &:hover {
+      background-color: var(--color-red-dark);
+      color: var(--color-red-shiny);
+    }
+  }
+  &--brown {
+    background-color: darken($color-brown, 15%);
+    color: $color-blue;
+    &:hover {
+      background-color: darken($color-blue, 10%);
+      color: $color-brown;
+    }
+  }
+}

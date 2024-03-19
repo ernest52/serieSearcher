@@ -1,0 +1,28 @@
+<% layout("../public/layout/boilerplate")  %>
+<section>
+  <div class="tag"><%= serial.name %></div>
+<%- include("../public/partials/serial__fav.ejs") %>
+</section>
+<section>
+  <div class="tag">You may also like</div>
+  <div class="movies_container">
+    <%
+    let size;
+    if(serials.length>12){
+      size=12
+    }else{
+      size=serials.length;
+    }
+       for(let i=0;i<size;i++) {
+       
+        %>
+    <div class="movie">
+      <a class="movie__link" href="/serie/<%=serials[i]._id %>">
+      <img src="<%= serials[i].image.medium %>" alt="poster of <%= serials[i].name %>" class="movie__img" />
+      <p class="movie__title">  <%= serials[i].name %></p>
+      <div class="movie__hidden"></div>
+      </a>
+    </div>
+    <% }%>
+  </div>
+</section>

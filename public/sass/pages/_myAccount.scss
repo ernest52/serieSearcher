@@ -1,0 +1,141 @@
+.myAccount {
+  display: flex;
+  // background-color: olive;
+  min-height: 100vh;
+  @include respond("small") {
+    flex-direction: column;
+  }
+
+  &__nav {
+    flex-basis: 30%;
+    // flex-grow: 1;
+    // width: 30%;
+    // background-color: $color-blue-dark;
+
+    position: relative;
+    border: 2px solid $color-blue-light;
+    padding: 2rem;
+    @include respond("small") {
+      flex-basis: auto;
+    }
+    @include respond("x-small") {
+      padding: 1rem 0;
+    }
+
+    &--link {
+      position: relative;
+      text-align: center;
+      background-color: $color-blue;
+      padding: 1rem;
+      margin: 1rem 0;
+      transition: all 0.2s 0.1s;
+      height: auto;
+      &:hover {
+        // color: $color-blue-dark;
+        color: white;
+      }
+
+      &:hover:after {
+        width: 100%;
+        opacity: 0.7;
+      }
+      &:after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 0;
+        height: 100%;
+        background-color: $color-blue-light;
+        transition: width 0.3s, opacity 0.5s;
+      }
+    }
+
+    a.active {
+      background-color: $color-blue;
+      border-bottom: 5px solid $color-blue-light;
+      &:after {
+        display: none;
+      }
+    }
+
+    &--bottom {
+      // padding: 0.5rem 3rem;
+      width: 90%;
+      height: 30%;
+      // background-color: red;
+      // margin: 0;
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      @include respond("small") {
+        transform: translateX(0);
+        position: static;
+        width: 100%;
+        height: auto;
+      }
+
+      // background-color: purple;
+      a {
+        height: auto;
+        padding: 0.5rem 2rem;
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        @include respond("small") {
+          position: static;
+          margin: 0;
+        }
+      }
+    }
+  }
+  &__mainPanel {
+    border: 2px solid $color-blue-light;
+    flex-grow: 1;
+    flex-basis: 70%;
+    @include respond("small") {
+      flex-basis: auto;
+    }
+    // height: max-content;
+    position: relative;
+    // z-index: -2;
+    // background-color: pink;
+    & .movie {
+      position: relative;
+    }
+    & .serial {
+      border: none;
+      grid-template-columns: 30% repeat(2, 1fr);
+      grid-template-rows: 30% auto 10vh;
+      @include respond("small") {
+        grid-template-columns: 100%;
+        grid-template-rows: repeat(4, auto) minmax(10vh, max-content);
+        grid-template-areas:
+          "image-box"
+          "title"
+          " blockA"
+          "blockB "
+          "blockC";
+      }
+    }
+    & .settings {
+      height: 50%;
+      width: 70%;
+      margin: 0 auto;
+      // background-color: pink;
+      display: flex;
+      flex-direction: column;
+      // align-items: center;
+      justify-content: space-around;
+      font-size: calc(#{var(--main-font-size)} + 1rem);
+      text-transform: capitalize;
+      & > * {
+        height: 20%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+  }
+}

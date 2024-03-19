@@ -1,0 +1,65 @@
+@mixin formInputFocus {
+  border: none;
+  outline: 2px solid $color-blue;
+  color: $color-blue;
+  &::placeholder {
+    color: $color-blue-light;
+  }
+  &:focus {
+    border: none;
+    outline: 2px solid $color-blue-light;
+    color: $color-blue-dark;
+  }
+}
+
+@mixin formButton {
+  cursor: pointer;
+  font-family: var(--font-family);
+  font-size: var(--main-font-size);
+  outline: none;
+  padding: 1rem;
+  color: white;
+  text-transform: capitalize;
+  border: none;
+  font-weight: bold;
+  border-radius: 70px;
+  &:hover {
+    color: $color-blue-dark;
+    background-color: #fff;
+  }
+}
+@mixin navElement {
+  background-color: var(--color-blue);
+  &:hover {
+    color: var(--color-brown);
+    background-color: var(--color-blue-dark);
+    cursor: pointer;
+  }
+}
+
+@mixin respond($breakpoint) {
+  @if ($breakpoint== "large") {
+    @media only screen and (max-width: 56.25rem) {
+      //900px
+      @content;
+    }
+  }
+  @if ($breakpoint== "medium") {
+    //800px
+    @media only screen and (max-width: 50rem) {
+      @content;
+    }
+  }
+  @if ($breakpoint== "small") {
+    //500px
+    @media only screen and (max-width: 31.25rem) {
+      @content;
+    }
+  }
+  @if ($breakpoint== "x-small") {
+    //300px
+    @media only screen and (max-width: 18.75rem) {
+      @content;
+    }
+  }
+}

@@ -1,0 +1,16 @@
+<% layout("../public/layout/boilerplate") %>
+<section>
+  <%if(err){%>
+  <div class="error">
+    <p class="error__paragraph"><%=err%></p>
+  </div>
+  <% }%> <%if(success){%>
+  <div class="success">
+    <p class="success__paragraph"><%=success%></p>
+  </div>
+  <% }%> <% if(path=="/register" || path=="update"){%>
+  <%-include("../public/partials/form__register.ejs")%> <% }else
+  if(path==="addComment" || path==="updateComment"){ %>
+  <%-include("../public/partials/comment__add.ejs") %> <%}else{ %>
+  <%-include("../public/partials/form__login.ejs") %> <% }%>
+</section>

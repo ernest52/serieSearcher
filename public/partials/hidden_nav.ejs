@@ -1,0 +1,58 @@
+<nav class="nav-hidden">
+  <div class="nav-hidden__toggler">
+    <div class="toggler__liner"></div>
+    <div class="nav-hidden__content">
+      <a href="/home" class="nav-hidden__link">Home</a>
+      <div id="countries" class="nav-hidden__link">
+        Countries
+        <ul class="nav-hidden__list">
+          <% for(let c of countries){ %>
+          <li class="nav-hidden__list--item">
+            <a href="/country/<%=c%>"><%= c %></a>
+          </li>
+
+          <% } %>
+        </ul>
+      </div>
+      <a href="/topSeries" class="nav-hidden__link">Top Score</a>
+      <!-- <a class="nav-hidden__link">Genres</a> -->
+      <div id="genres" class="nav-hidden__link">
+        Genres
+        <ul class="nav-hidden__list">
+          <% for(let g of genres){ %>
+          <li class="nav-hidden__list--item">
+            <a href="/genre/<%= g %>"><%= g %></a>
+          </li>
+
+          <% } %>
+        </ul>
+      </div>
+      <% if(myAccount){%>
+      <a href="/myAccount" class="nav-hidden__link">My Account</a>
+      <%}else{%>
+      <a href="/user" class="nav-hidden__link">log in</a>
+      <% }%>
+    </div>
+  </div>
+</nav>
+
+<script>
+  const toggler = document.querySelector(".nav-hidden__toggler");
+  toggler.addEventListener("click", (e) => {
+    e.stopPropagation();
+    // console.log(`e.target: ${e.target}`);
+    toggler.classList.toggle("crosser");
+    document.querySelector(".nav-hidden__content").classList.toggle("showNav");
+  });
+  // const subNav = document.querySelector(".sub__container");
+  const genres = document.getElementById("genres");
+  const countries = document.getElementById("countries");
+  genres.addEventListener("click", (e) => {
+    e.stopPropagation();
+    genres.classList.toggle("nav-hidden__sub");
+  });
+  countries.addEventListener("click", (e) => {
+    e.stopPropagation();
+    countries.classList.toggle("nav-hidden__sub");
+  });
+</script>

@@ -1,0 +1,41 @@
+<%- include("./hidden_nav") %>
+<nav class="topNav">
+  <!-- <div class="logo">Movie Booking</div> -->
+  <div class="topNav__element">
+    <a href="/home" class="topNav__element--link">Home</a>
+  </div>
+  <div class="topNav__element topNav__element--sup">
+    Genres
+    <ul class="<%if(myAccount){%>sub_nav sub_nav--user <%}else{%>sub_nav <%}%>">
+      <% for(let g of genres){ %> <%if(myAccount){ %>
+      <li class="sub_nav__element sub_nav__element--user">
+        <a href="/genre/<%=g%>"><%= g %></a>
+      </li>
+      <% }else{%>
+      <li class="sub_nav__element"><a href="/genre/<%=g%>"><%= g%></a></li>
+      <% }%> <% } %>
+    </ul>
+  </div>
+  <div class="topNav__element topNav__element--sup">
+    Country
+    <ul class="<%if(myAccount){%>sub_nav sub_nav--user <%}else{%>sub_nav <%}%>">
+      <% for(let c of countries){ %> <%if(myAccount){ %>
+      <li class="sub_nav__element sub_nav__element--user">
+        <a href="/country/<%=c%>"><%= c %></a>
+      </li>
+      <% }else{%>
+      <li class="sub_nav__element"><a href="/country/<%=c%>"><%= c %></a></li>
+      <% }%> <% } %>
+    </ul>
+  </div>
+  <div class="topNav__element">
+    <a href="/topSeries" class="topNav__element--link">Top Score</a>
+  </div>
+  <div class="topNav__element">
+    <% if(myAccount){ %>
+    <a href="/myAccount" class="topNav__element--link">My Account</a>
+    <%}else{ %>
+    <a href="/user" class="topNav__element--link">log in</a>
+    <%}%>
+  </div>
+</nav>

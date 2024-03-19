@@ -1,0 +1,56 @@
+<% layout("../public/layout/boilerplate") %>
+<section>
+  <div class="review__serial-box">
+    <p class="title"><%= serial.name %></p>
+    <div class="blockA">
+      <div class="blockA__details">
+        <p><span class="--u-bigger">premiered: </span><%= serial.premiered%></p>
+        <%if(serial.ended){ %>
+        <p><span class="--u-bigger">ended: </span><%= serial.ended %></p>
+        <% }%>
+        <p><span class="--u-bigger">status: </span><%= serial.status %></p>
+        <p>
+          <span class="--u-bigger">rating: </span>
+          <% let text; const rate= Math.floor(serial.score*100); rate>100?
+          text=`HOT!! recommended by 100`:text=`recommended by ${rate}`; %> <%=
+          text %> % of viewers
+        </p>
+      </div>
+    </div>
+    <div class="image-box">
+      <img
+        src="<%= serial.image.medium %>"
+        alt="poster of <%= serial.name %>"
+        class="image-box--image"
+      />
+    </div>
+    <div class="blockB">
+      <p class="blockB__summary"><%- serial.summary %></p>
+      <div class="blockB__details">
+        <p>
+          <span class="--u-bigger">country: </span
+          ><a class="serial__link" href="/country/<%= serial.country %>"
+            ><%= serial.country%></a
+          >
+        </p>
+        <p><span class="--u-bigger">language: </span><%= serial.language %></p>
+        <p>
+          <span class="--u-bigger">genres:</span>
+          <% for(let g of serial.genres){ %>
+          <a class="serial__link" href="/genre/<%= g %>"><%= g %></a>
+          <% } %>
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="reviews">
+    <% comments.forEach((comment,index)=>{ %>
+    <div class="review-box">
+      <p class="review-box__user"><%=users[index].user.name%></p>
+      <p class="review-box__note"><%=comment.note %>/10</p>
+      <p class="review-box__comment"><%= comment.body%></p>
+    </div>
+
+    <%})%>
+  </div>
+</section>

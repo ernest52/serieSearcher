@@ -1,0 +1,27 @@
+<!-- <form class="form" method="post" action="/myAccount/update?_method=update"> -->
+
+<form class="form" method="post" <%if(path=="/register" ){%>
+  action="/register" <%}else if(path=="update"){%>action="/myAccount/update?_method=patch"<%}%>   >
+  <h1>
+    <%if(path=="/register"){%> Create new Account <% }else if(path=="update"){%>
+    Update Your Data <%}%>
+  </h1>
+  <label class="form__label" for="name">username</label>
+  <input class="form__input" name="user[username]" id="name" type="text"  placeholder="<% if(path=="update"){%><%=user?.name%><%}else{%>enter your name <%}%>"/>
+  <label class="form__label" for="password">password</label>
+  <input
+    class="form__input"
+    name="user[password]"
+    id="password"
+    type="password"
+    placeholder="<% if(path=="update"){%><%=user?.password%><%}else{%>enter your password <%}%>"
+  />
+  <label class="form__label" for="mail">e-mail</label>
+  <input class="form__input" name="user[mail]" id="mail" type="email"  placeholder="<% if(path=="update"){%><%=user?.mail%><%}else{%>enter your e-mail <%}%>" />
+
+  <input
+    class="form__button button--green"
+    type="submit"
+ value="<% if(path=="update"){%>update<%}else if(path=="/register"){%>create account<%} %>"
+  />
+</form>

@@ -1,0 +1,88 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 70%;
+  // background-color: green;
+  margin: 0 auto;
+  color: $color-blue-light;
+
+  &__label {
+    text-transform: capitalize;
+    font-size: calc(var(--main-font-size) + 1rem);
+    margin: 1rem 0;
+    width: 100%;
+  }
+  &__input {
+    height: 10vh;
+    @include formInputFocus;
+    margin: 1rem 0;
+    width: 100%;
+  }
+  .form__section {
+    margin: 3% 0;
+    // background-color: green;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    width: 100%;
+    padding: 3%;
+    &--element {
+      margin: 0 1%;
+      border: none;
+      outline: 2px solid $color-blue;
+      @include formInputFocus;
+    }
+  }
+  &__button {
+    @include formButton;
+    background-color: $color-blue-dark;
+    align-self: flex-end;
+  }
+  .form__textarea {
+    @include formInputFocus;
+    max-width: 100%;
+    min-width: 100%;
+    min-height: 50vh;
+    max-height: 50vh;
+  }
+}
+
+.register {
+  &__p {
+    // align-self: flex-end;
+    width: 70%;
+    margin: 1rem auto;
+    align-self: center;
+  }
+  &__link {
+    display: inline;
+    color: lighten($color-blue, 40%);
+    &:hover {
+      color: $color-blue;
+    }
+  }
+}
+
+.form-inline {
+  border: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 100%;
+
+  // background-color: green;
+  &__input {
+    @include formInputFocus;
+    // background-color: yellow;
+    margin: 1rem 0;
+    width: 100%;
+  }
+  &__button {
+    @include formButton;
+
+    background-color: $color-blue-dark;
+
+    margin-left: auto;
+  }
+}

@@ -1,0 +1,39 @@
+a {
+  display: block;
+  height: 100%;
+  text-decoration: none;
+  color: currentColor;
+}
+.error {
+  // display: flex;
+  // flex-direction: column;
+  // align-items: center;
+  @extend %message;
+  background-color: var(--error-background);
+  &__heading {
+    @extend %messageHeading;
+    color: var(--error-heading-color);
+    // font-size: calc(#{var(--main-font-size)} + 1rem);
+  }
+
+  &__paragraph {
+    color: var(--error-paragraph-color);
+    &--highlight {
+      text-transform: capitalize;
+      font-weight: bold;
+      // color: darken($error-paragraph-color, 5%);
+      color: var(--error-heading-color);
+    }
+  }
+}
+.success {
+  @extend %message;
+  background-color: var(--success-background);
+  &__heading {
+    @extend %messageHeading;
+    color: var(--success-heading-color);
+  }
+  &__paragraph {
+    color: var(--success-paragraph-color);
+  }
+}

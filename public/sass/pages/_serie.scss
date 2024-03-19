@@ -1,0 +1,107 @@
+.serial {
+  // background-color: #008000;
+  border: 2px solid $color-blue-light;
+  padding: 2rem;
+  color: var(--color-blue-light);
+  max-width: 100%;
+  // min-height: 100vh;
+  display: grid;
+  grid-template-columns: 30vw repeat(2, 1fr);
+  grid-template-rows: 30vw auto 10vh;
+  grid-template-areas:
+    "image-box title blockA"
+    "blockB blockB blockB"
+    "blockC blockC blockC";
+  @include respond("small") {
+    grid-template-columns: 100%;
+    grid-template-rows: repeat(4, auto) minmax(10vh, max-content);
+    grid-template-areas:
+      "image-box"
+      "title"
+      " blockA"
+      "blockB "
+      "blockC";
+    padding: 0;
+  }
+  &__title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: calc(var(--main-font-size) + 0.5rem);
+    margin: 0 1rem;
+    text-align: center;
+    letter-spacing: 4px;
+    text-transform: capitalize;
+    font-weight: bold;
+    color: #fff;
+    grid-area: title;
+    // background-color: gray;
+    @include respond("small") {
+      margin: 2rem 0;
+      font-size: var(--main-font-size);
+    }
+  }
+  .blockA {
+    grid-area: blockA;
+    // background-color: olive;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+  }
+  .image-box {
+    grid-area: image-box;
+    // background-color: lightblue;
+    padding: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid $color-blue-light;
+    &--image {
+      display: block;
+      width: 90%;
+      height: 90%;
+      // height:
+    }
+  }
+  .blockB {
+    grid-area: blockB;
+    // background-color: violet;
+    padding: 2rem;
+    &__summary + p {
+      // font-size: calc(var(--main-font-size) + 1rem);
+      font-size: calc(var(--main-font-size) + 0.5rem);
+      color: lighten($color-blue-light, 40%);
+      margin: 1rem 0;
+    }
+  }
+  .blockC {
+    grid-area: blockC;
+    // background-color: crimson;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    & > a {
+      padding: 0 2rem;
+      max-height: 70%;
+      @include respond("x-small") {
+        margin: 1rem 0;
+        max-height: 100%;
+        width: 100%;
+        padding: 1rem 2rem;
+      }
+    }
+
+    @include respond("small") {
+      justify-content: center;
+      align-items: center;
+    }
+    @include respond("x-small") {
+      flex-direction: column;
+      align-items: stretch;
+    }
+  }
+  &__link {
+    display: inline-block;
+    color: pink;
+  }
+}

@@ -1,0 +1,116 @@
+.review__serial-box {
+  // background-color: #008000;
+  border: 2px solid $color-blue-light;
+  padding: 2rem;
+  color: var(--color-blue-light);
+  max-width: 100%;
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  grid-template-rows: 100vh repeat(2, auto);
+  grid-template-areas:
+    "image-box image-box"
+    "title blockA"
+    "blockB blockB";
+  & > .title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: calc(var(--main-font-size) + 0.5rem);
+    letter-spacing: 4px;
+    text-transform: capitalize;
+    font-weight: bold;
+    color: #fff;
+    grid-area: title;
+    // background-color: gray;
+  }
+  .blockA {
+    grid-area: blockA;
+    // background-color: olive;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+  }
+  .image-box {
+    grid-area: image-box;
+    // background-color: lightblue;
+    padding: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid $color-blue-light;
+    &--image {
+      display: block;
+      width: 90%;
+      height: 90%;
+      // height:
+    }
+  }
+  .blockB {
+    grid-area: blockB;
+    // background-color: violet;
+    padding: 2rem;
+    &__summary + p {
+      // font-size: calc(var(--main-font-size) + 1rem);
+      font-size: calc(var(--main-font-size) + 0.5rem);
+      color: lighten($color-blue-light, 40%);
+      margin: 1rem 0;
+    }
+  }
+
+  &__link {
+    display: inline-block;
+    color: pink;
+  }
+}
+
+.reviews {
+  margin: 5% 0;
+  display: flex;
+  flex-direction: column;
+  // background-color: $color-blue-light;
+  // border: 2px solid $color-blue-light;
+  .review-box {
+    display: grid;
+    grid-template-columns: minmax(max-content, 30%) 1fr minmax(max-content, 15%);
+    grid-template-rows: repeat(2, auto);
+    grid-template-areas:
+      "user . note"
+      "comment comment comment";
+    border: 2px solid $color-blue-light;
+    color: white;
+    // border: 2px solid white;
+    margin: 2% 0;
+    & > :not(:last-child) {
+      padding: 2%;
+      font-size: calc(var(--main-font-size) + 1rem);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    &__user {
+      grid-area: user;
+      border: 2px solid $color-blue-light;
+      // border: 2px solid white;
+
+      border-left: 0;
+      border-top: 0;
+      // background-color: blue;
+    }
+    &__note {
+      grid-area: note;
+      border: 2px solid $color-blue-light;
+      // border: 2px solid white;
+      border-right: 0;
+      border-top: 0;
+      // background-color: greenyellow;
+    }
+    &__comment {
+      grid-area: comment;
+      color: $color-brown;
+      padding: 1% 2%;
+      // color: white;
+      font-size: calc(var(--main-font-size) + 1rem);
+    }
+  }
+}

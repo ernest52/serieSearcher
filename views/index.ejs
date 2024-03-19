@@ -1,0 +1,48 @@
+<% layout("../public/layout/boilerplate")  %>
+
+      <section>
+        <%if(err){%>
+          <div class="error">
+            <p class="error__paragraph"><%=err%></p>
+          </div>
+          <% }%>
+          <%if(success){%>
+            <div class="success">
+              <p class="success__paragraph"><%=success%></p>
+            </div>
+            <% }%>
+        <div class="tag">Newest on the Page</div>
+        <div class="movies_container">
+          
+          <%   for(let i=data.length-12;i<data.length;i++) {%>
+          <div class="movie">
+            <a class="movie__link" href="/serie/<%= data[i]._id %>">
+            <img src="<%=data[i].image.medium %>" alt="poster of <%=data[i].name%>" class="movie__img" />
+            <p class="movie__title">  <%= data[i].name %></p>
+            <div class="movie__hidden"></div>
+            </a>
+          </div>
+          <% }%>
+        </div>
+      </section>
+      <section>
+        <div class="tag">Suggested</div>
+        <div class="movies_container">
+          <% 
+          let random=Math.floor(Math.random()*(data.length-24));
+         random= random<0?0:random;
+          // console.log(`random ${random} data length ${data.length}`);
+            for(let i=random;i<(random+12);i++) {%>
+            <div class="movie">
+              <a class="movie__link" href="/serie/<%= data[i]._id %>">
+              <img src="<%= data[i].image.medium %>" alt="poster of <%=data[i].name %>" class="movie__img" />
+              <p class="movie__title">  <%= data[i].name%></p>
+              <div class="movie__hidden"></div>
+            </a>
+            </div>
+          
+            <% }%>
+
+        </div>
+      </section>
+ 

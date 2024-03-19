@@ -1,0 +1,86 @@
+<% layout("../public/layout/boilerplate") %>
+<section>
+  <%if(err){%>
+  <div class="error">
+    <p class="error__paragraph"><%=err%></p>
+  </div>
+  <% }%> <%if(success){%>
+  <div class="success">
+    <p class="success__paragraph"><%=success%></p>
+  </div>
+  <% }%>
+  <div class="myAccount">
+    <div class="myAccount__nav">
+      <a
+        href="/myAccount"
+        class="<% if(favourites){%>active<%}%> myAccount__nav--link"
+        >Favourites</a
+      >
+      <a
+        href="/myAccount/settings"
+        class="<% if(setSection){%>active<%}%> myAccount__nav--link"
+        >Settings</a
+      >
+      <a
+        href="/myAccount/comments"
+        class="<% if(comments){%>active<%}%> myAccount__nav--link"
+        >See your comments</a
+      >
+      <div class="myAccount__nav--bottom">
+        <form action="/myAccount" method="post" class="form-inline">
+          <input
+            class="form-inline__input"
+            type="text"
+            placeholder="Enter title"
+            name="title"
+          />
+          <input type="submit" value="search" class="form-inline__button" />
+        </form>
+        <a href="/myAccount/logout" class="button button--blue">log Out</a>
+      </div>
+    </div>
+    <div class="myAccount__mainPanel">
+      <% if(favourites){ %> <%- include("../public/partials/favourites")%>
+      <%}else if(serial){%> <%- include("../public/partials/serial__fav")%> <%
+      }else if(setSection){%>
+      <div class="settings">
+        <a href="/myAccount/update" class="button--blue">update data</a>
+        <a href="/myAccount/remove" class="button--red">remove account</a>
+        // <a href="#" class="button--green">set details</a>
+      </div>
+      <%}else if(comments){ comments.forEach((comment,index)=>{ %>
+      <div class="comment">
+        <a href="/serie/<%=movies[index]._id %>">
+          <img
+            src="<%=movies[index].image.medium %>"
+            alt="poster of <%= movies[index].name %>"
+            class="comment__image"
+          />
+        </a>
+
+        <p class="comment__text"><%=comment.body %></p>
+        <p class="comment__note"><%=comment.note %>/10</p>
+        <div class="comment__function">
+          <a
+            href="/myAccount/comments/<%=comment._id%>/update"
+            class="button button--blue comment__link"
+            >Update</a
+          >
+          <form
+            method="post"
+            action="/myAccount/comments/<%=comment._id%>/delete?_method=DELETE"
+            class="form-inline"
+          >
+            <input
+              type="submit"
+              value="delete"
+              class="button button--red comment__link"
+            />
+          </form>
+        </div>
+      </div>
+
+      <% }) %> <%}%>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,27 @@
+
+<% layout("../public/layout/boilerplate")  %>
+      <section>
+        <div class="tag"> <%= subpage %></div>
+        <div class="movies_container">
+          <%
+    let size;;
+    if(data.length>12){
+      size=12
+    }else{
+      size=data.length;
+    }
+       for(let i=0;i<size;i++) {
+       
+        %>
+    <div class="movie">
+      <a class="movie__link" href="/serie/<%=data[i]._id %>">
+      <img src="<%= data[i].image.medium %>" alt="poster of <%= data[i].name %>" class="movie__img" />
+      <p class="movie__title">  <%= data[i].name %></p>
+      <div class="movie__hidden"></div>
+      </a>
+    </div>
+    <% }%>
+        </div>
+      </section>
+      
+

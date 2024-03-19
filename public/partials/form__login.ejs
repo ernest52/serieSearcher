@@ -1,0 +1,16 @@
+<form class="form" action="/user" method="post">
+  <label class="form__label" for="name">username</label>
+  <input class="form__input" name="user[username]" id="name" type="text" />
+  <label class="form__label" for="password">password</label>
+  <input
+    class="form__input"
+    name="user[password]"
+    id="password"
+    type="password"
+  />
+  <input class="form__button button--blue" type="submit" value="log in" />
+</form>
+<p class="register__p">
+  Don't have an account? Register
+  <a class="register__link" href="/register">now</a>
+</p>

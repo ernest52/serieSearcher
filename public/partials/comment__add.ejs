@@ -1,0 +1,40 @@
+<form
+  class="form"
+  action="<%if(!comment){%> /serie/<%= id %>/addComment<%}else{%>/myAccount/comments/<%=comment._id%>/update?_method=update<%}%>"
+  method="post"
+>
+  <div class="form__section">
+    <label for="note">Give a note</label>
+    <input
+      type="number"
+      min="1"
+      max="10"
+      name="note"
+      value="<%= comment?.note %>"
+      class="form__section--element"
+    />
+    <span>/10</span>
+  </div>
+
+  <textarea
+    name="body"
+    id="body"
+    cols="30"
+    rows="10"
+    class="form__textarea"
+    placeholder="<%if(comment){%><%= comment.body%><%}else{%>Enter your comment here<% }%>"
+  ></textarea>
+  <div class="form__section">
+    <a class="form__button" href="/home">Go Back to Homepage </a>
+    <input
+      class="form__button"
+      type="submit"
+      value="<%if(comment){%>Update<%}else{%>Add Comment<% }%>"
+    />
+  </div>
+</form>
+
+<!-- <p class="register__p">
+  Go Ba
+  <a class="register__link" href="/register">now</a>
+</p> -->

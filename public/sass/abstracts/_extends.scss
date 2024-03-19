@@ -1,0 +1,11 @@
+%message {
+  margin: 3%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: calc(#{var(--main-font-size)} + 0.5rem);
+}
+%messageHeading {
+  font-size: calc(#{var(--main-font-size)} + 1rem);
+  text-transform: capitalize;
+}

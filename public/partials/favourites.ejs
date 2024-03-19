@@ -1,0 +1,11 @@
+<div class="movies_container">
+  <% for(let i=0;i<favourites.length;i++) { %>
+<div class="movie">
+  <a class="movie__link" href="/myAccount/favourites/<%=favourites[i]._id %>">
+  <img src="<%= favourites[i].image.medium %>" alt="poster of <%= favourites[i].name %>" class="movie__img" />
+  <p class="movie__title">  <%= favourites[i].name %></p>
+  <div class="movie__hidden"></div>
+  </a>
+</div>
+<% }%>
+</div>
