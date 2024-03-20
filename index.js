@@ -26,7 +26,7 @@ const passportLocal = require("passport-local");
 const localsVeriables = require("./public/partials/middlewares/localsVeriables.js");
 // const methodOverride = require("method-override");
 // let favourites_option = false;
-let serials = [];
+// let serials = [];
 // let myAccount = false;
 // let isFav = false;
 let success = false;
@@ -61,12 +61,12 @@ server.use(express.urlencoded({ extended: true }));
 
 server.use(checkingData);
 server.use(localsVeriables);
-const initialData = function () {
-  serials = [];
-  // myAccount = false;
-  favourites_option = false;
-  // isFav = false;
-};
+// const initialData = function () {
+//   // serials = [];
+//   // myAccount = false;
+//   // favourites_option = false;
+//   // isFav = false;
+// };
 // -----------
 //home
 //-----------
@@ -235,6 +235,7 @@ server.post(
 // -----------------------
 // myAccount
 //-----------------------
+let serials = [];
 server.get(
   "/myAccount",
   asyncWrap(async (req, res, next) => {
@@ -321,7 +322,8 @@ server.get("/myAccount/settings", (req, res) => {
   }
 });
 server.post("/myAccount/logout", (req, res) => {
-  initialData();
+  // initialData();
+  serials = [];
   req.logOut((err) => {
     if (err) return next(err);
     console.log("log out successfully");
@@ -338,7 +340,8 @@ server.get(
       });
       // console.log(`removed account ${removed}`);
       req.flash("success", `Your account has been deleted succesfully`);
-      initialData();
+      // initialData();
+      serials = [];
       res.redirect("/home");
     } else {
       throw new ErrorApp("unauthorizes enter", 500);
