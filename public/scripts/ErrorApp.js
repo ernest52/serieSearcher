@@ -3,7 +3,7 @@ const { genres } = require("../../dataBase");
 
 // const Joi=require("../../node_modules/joi")
 const Joi = require("joi");
-let myAccount;
+// let myAccount;
 const ErrorApp = class extends Error {
   constructor(message, status, page, path) {
     super();
@@ -21,20 +21,13 @@ const errHandler = function (err, req, res, next) {
   req.flash("error", `Error: ${err.message} status: ${err.status}`);
   res.status(status).render(page, {
     setSection: false,
-    countries,
-    genres,
     err: req.flash("error"),
     data,
     path,
-    success: "",
     serial: "",
     favourites: "",
-    myAccount,
     user: "",
   });
-  myAccount = false;
-  // console.log(`myAccount: ${myAccount}`);
-  // res.status(status).send(`${err.status} ${err.message}`);
 };
 
 function asyncWrap(fn) {
@@ -64,7 +57,7 @@ module.exports.registerFormValidator = (req, res, next) => {
     // end of JOI
     // console.log(`req.path => ${req.path}`);
     if (req.path == "/myAccount/update") {
-      myAccount = true;
+      // myAccount = true;
       throw new ErrorApp(msg, 400, "forms", "update");
     } else {
       throw new ErrorApp(msg, 400, "forms", "/register");
@@ -114,7 +107,7 @@ module.exports.reviewValidator = (req, res, next) => {
   if (error) {
     const { details } = error;
     const msg = details.map((det) => det.message).join(",");
-    myAccount = true;
+    // myAccount = true;
     throw new ErrorApp(msg, 500, "index");
   } else {
     next();

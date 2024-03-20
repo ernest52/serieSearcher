@@ -24,7 +24,7 @@ const flash = require("connect-flash");
 const passport = require("passport");
 const passportLocal = require("passport-local");
 const localsVeriables = require("./public/partials/middlewares/localsVeriables.js");
-let success = false;
+// let success = false;
 const checkingData = functions.checkingData;
 server.use(
   session({
@@ -66,10 +66,10 @@ server.get("/home", (req, res) => {
   // const data = req.data;
 
   res.render("index", {
-    success: req.flash("success"),
+    // success: req.flash("success"),
     err: req.flash("error"),
   });
-  success = success ? false : success;
+  // success = success ? false : success;
 });
 // ----------------
 // user
@@ -80,7 +80,7 @@ server.get("/user", (req, res) => {
   res.render("forms", {
     path,
     err: req.flash("error"),
-    success: req.flash("success"),
+    // success: req.flash("success"),
   });
 });
 server.get(
@@ -125,7 +125,7 @@ server.get(
         res.render(`index`, {
           fullName: userData.username,
           userData,
-          success: req.flash("success"),
+          // success: req.flash("success"),
           err: "",
         });
       } else {
@@ -180,7 +180,7 @@ server.get(
 
         res.render("myAccount", {
           comments: "",
-          success: req.flash("success"),
+          // success: req.flash("success"),
           setSection: false,
           favourites,
           serial: "",
@@ -217,7 +217,7 @@ server.get("/myAccount/settings", (req, res) => {
   if (req.isAuthenticated()) {
     res.render("myAccount", {
       comments: "",
-      success: req.flash("success"),
+      // success: req.flash("success"),
       setSection: true,
 
       favourites: "",
@@ -261,7 +261,7 @@ server.get(
         user,
         path: "update",
         err: "",
-        success: req.flash("success"),
+        // success: req.flash("success"),
       });
     } else {
       throw new ErrorApp("unauthorized enter", 500);
@@ -312,7 +312,7 @@ server.get(
       res.render("myAccount", {
         movies,
         comments,
-        success: req.flash("success"),
+        // success: req.flash("success"),
         setSection: false,
         favourites: "",
         serial: "",
@@ -333,7 +333,7 @@ server.get(
         comment,
         path: "updateComment",
         err: "",
-        success: req.flash("success"),
+        // success: req.flash("success"),
       });
     } else {
       throw new ErrorApp("unauthorized enter", 401);
@@ -388,7 +388,7 @@ server.get(
         // res.render()
         res.render("myAccount", {
           comments: "",
-          success: req.flash("success"),
+          // success: req.flash("success"),
           setSection: false,
           favourites: "",
           serial,
@@ -432,7 +432,7 @@ server.get("/register", (req, res) => {
   res.render("forms", {
     path,
     err: "",
-    success: req.flash("success"),
+    // success: req.flash("success"),
   });
 });
 server.post(
@@ -496,7 +496,7 @@ server.get(
         path: "addComment",
         id: req.params.id,
         err: "",
-        success: req.flash("success"),
+        // success: req.flash("success"),
       });
     } else {
       throw new ErrorApp("unauthorized enter", 500);
@@ -550,7 +550,7 @@ server.get(
           `Error: There is no comments for this serial. Be the first One and put one in! :) status: 500 `
         );
         res.render("index", {
-          success: req.flash("success"),
+          // success: req.flash("success"),
           err: req.flash("error"),
         });
       }
