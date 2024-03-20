@@ -282,11 +282,15 @@ server.patch(
         : "";
       updated.mail = mail ? mail : updated.mail;
       await updated.save();
-      req.flash(
-        "success",
-        "Your account was succesfully updated. You can log in using your new data"
-      );
-      res.redirect("/home");
+
+      req.logOut((err) => {
+        if (err) return next(err);
+        req.flash(
+          "success",
+          "Your account was succesfully updated. You can log in using your new data"
+        );
+        res.redirect("/home");
+      });
     } else {
       throw new ErrorApp("unauthorized enter", 500);
     }
