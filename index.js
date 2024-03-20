@@ -84,10 +84,10 @@ server.get("/", (req, res) => {
 //   res.render("subpage", { genres, countries, data, subpage, myAccount });
 // });
 server.get("/home", (req, res) => {
-  const data = req.data;
+  // const data = req.data;
 
   res.render("index", {
-    data,
+    // data,
     // genres,
     // countries,
     // myAccount,
@@ -164,14 +164,14 @@ server.get(
       // console.log(`password: ${password}`);
       const [userData] = await User.find({ _id: req.user._id });
       if (userData) {
-        const data = req.data;
+        // const data = req.data;
         // myAccount = true;
 
         res.render(`index`, {
           // countries,
           // genres,
           fullName: userData.username,
-          data,
+          // data,
           userData,
           // myAccount,
           // isFaV: "",
@@ -714,7 +714,7 @@ server.get(
           // genres,
         });
       } else {
-        const data = req.data;
+        // const data = req.data;
         // err: {
         //   status: 500,
         //   message:
@@ -726,7 +726,7 @@ server.get(
           `Error: There is no comments for this serial. Be the first One and put one in! :) status: 500 `
         );
         res.render("index", {
-          data,
+          // data,
           // countries,
           // genres,
           // myAccount,

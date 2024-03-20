@@ -6,5 +6,6 @@ module.exports = asyncWrap(async (req, res, next) => {
   res.locals.countries = countries;
   res.locals.myAccount = req.isAuthenticated();
   res.locals.isFav = false;
+  res.locals.data = req.data;
   next();
 });
