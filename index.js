@@ -27,10 +27,8 @@ const localsVeriables = require("./public/partials/middlewares/localsVeriables.j
 // const methodOverride = require("method-override");
 // let favourites_option = false;
 let serials = [];
-let userpassword;
-let myAccount = false;
-let isFav = false;
-let name;
+// let myAccount = false;
+// let isFav = false;
 let success = false;
 const checkingData = functions.checkingData;
 // const searchReplicatedByName = functions.searchReplicatedByName;
@@ -65,11 +63,9 @@ server.use(checkingData);
 server.use(localsVeriables);
 const initialData = function () {
   serials = [];
-  userpassword = "";
-  name = "";
-  myAccount = false;
+  // myAccount = false;
   favourites_option = false;
-  isFav = false;
+  // isFav = false;
 };
 // -----------
 //home
@@ -94,7 +90,7 @@ server.get("/home", (req, res) => {
     data,
     // genres,
     // countries,
-    myAccount,
+    // myAccount,
     success: req.flash("success"),
     err: req.flash("error"),
   });
@@ -108,7 +104,7 @@ server.get("/home", (req, res) => {
 server.get("/user", (req, res) => {
   const path = req.path;
   res.render("forms", {
-    myAccount,
+    // myAccount,
     // countries,
     // genres,
     path,
@@ -169,7 +165,7 @@ server.get(
       const [userData] = await User.find({ _id: req.user._id });
       if (userData) {
         const data = req.data;
-        myAccount = true;
+        // myAccount = true;
 
         res.render(`index`, {
           // countries,
@@ -177,8 +173,8 @@ server.get(
           fullName: userData.username,
           data,
           userData,
-          myAccount,
-          isFaV: "",
+          // myAccount,
+          // isFaV: "",
           success: req.flash("success"),
           err: "",
         });
@@ -264,7 +260,7 @@ server.get(
         // const { favMovies: favourites } = await owner.populate("favMovies");
         // console.log(`favourites: ${favourites}`);
         res.render("myAccount", {
-          myAccount,
+          // myAccount,
           comments: "",
           success: req.flash("success"),
           setSection: false,
@@ -273,7 +269,7 @@ server.get(
           favourites,
           serial: "",
           err: "",
-          isFav,
+          // isFav,
         });
       } else {
         // const message = "you are unauthorised";
@@ -308,18 +304,18 @@ server.post(
   })
 );
 server.get("/myAccount/settings", (req, res) => {
-  if (myAccount) {
+  if (req.isAuthenticated()) {
     res.render("myAccount", {
       comments: "",
       success: req.flash("success"),
       setSection: true,
-      myAccount,
+      // myAccount,
       // genres,
       // countries,
       favourites: "",
       serial: "",
       err: "",
-      isFav: "",
+      // isFav: "",
     });
   } else {
   }
@@ -357,7 +353,7 @@ server.get(
 
       res.render("forms", {
         user,
-        myAccount,
+        // myAccount,
         // countries,
         // genres,
         path: "update",
@@ -383,7 +379,7 @@ server.patch(
         : "";
       updated.mail = mail ? mail : updated.mail;
       await updated.save();
-      myAccount = false;
+      // myAccount = false;
       // res.render("index", {
       //   data,
       //   myAccount: false,
@@ -441,13 +437,13 @@ server.get(
         comments,
         success: req.flash("success"),
         setSection: false,
-        myAccount,
+        // myAccount,
         // genres,
         // countries,
         favourites: "",
         serial: "",
         err: "",
-        isFav: "",
+        // isFav: "",
       });
     } else {
       throw new ErrorApp("unauthorized enter", 500);
@@ -462,7 +458,7 @@ server.get(
       const comment = await Review.findById(id);
       res.render("forms", {
         comment,
-        myAccount,
+        // myAccount,
         // countries,
         // genres,
         path: "updateComment",
@@ -526,7 +522,7 @@ server.get(
           comments: "",
           success: req.flash("success"),
           setSection: false,
-          myAccount,
+          // myAccount,
           // genres,
           // countries,
           favourites: "",
@@ -572,7 +568,7 @@ server.get("/register", (req, res) => {
   const path = req.path;
 
   res.render("forms", {
-    myAccount,
+    // myAccount,
     // countries,
     // genres,
     path,
@@ -629,7 +625,8 @@ server.get(
           }
         });
       });
-      if (myAccount) {
+      let isFav = false;
+      if (req.isAuthenticated()) {
         const [userData] = await User.find({ _id: req.user._id });
         isFav = userData.favMovies.includes(serial._id);
       }
@@ -638,7 +635,7 @@ server.get(
         serials,
         // genres,
         // countries,
-        myAccount,
+        // myAccount,
         isFav,
       });
     } else {
@@ -650,12 +647,12 @@ server.get(
 server.get(
   "/serie/:id/addComment",
   asyncWrap(async (req, res) => {
-    if (myAccount) {
+    if (req.isAuthenticated()) {
       // const [owner] = await User.find({ name, password: userpassword });
       // console.log(`name: ${name},password: ${userpassword}, owner: ${owner}`);
       res.render("forms", {
         comment: "",
-        myAccount,
+        // myAccount,
         // countries,
         // genres,
         path: "addComment",
@@ -709,7 +706,7 @@ server.get(
           users,
           comments,
           serial,
-          myAccount,
+          // myAccount,
           // countries,
           // genres,
         });
@@ -729,7 +726,7 @@ server.get(
           data,
           // countries,
           // genres,
-          myAccount,
+          // myAccount,
           success: req.flash("success"),
           err: req.flash("error"),
         });
@@ -750,7 +747,7 @@ server.get("/topSeries", (req, res) => {
 
   const subpage = "Top Series";
 
-  res.render("subpage", { data, subpage, myAccount });
+  res.render("subpage", { data, subpage });
 });
 server.get(
   "/:sub/:g",
@@ -774,7 +771,7 @@ server.get(
           // countries,
           data,
           subpage,
-          myAccount,
+          // myAccount,
         });
       } else {
         // throw new ErrorApp(
