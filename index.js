@@ -1,11 +1,6 @@
 const express = require("express");
-const { Movie, User, genres, countries, Review } = require("./dataBase");
+const { Movie, User, Review, genres, countries } = require("./dataBase");
 const functions = require("./public/scripts/functions.js");
-// const Movie = data.Movie;
-// const User = data.User;
-// const genres = data.genres;
-// const countries = data.countries;
-// const Review = data.Review;
 const port = 3000;
 const path = require("path");
 const { default: mongoose } = require("mongoose");
@@ -22,17 +17,13 @@ const {
   userFormValidator,
   searcherValidator,
 } = require("./public/scripts/ErrorApp.js");
-// const { errHandler } = require("./public/scripts/ErrorApp.js");
-// const { asyncWrap } = require("./public/scripts/ErrorApp.js");
-// const { registerFormValidator } = require("./public/scripts/ErrorApp.js");
-// const { reviewValidator } = require("./public/scripts/ErrorApp.js");
-// const { userFormValidator } = require("./public/scripts/ErrorApp.js");
-// const { searcherValidator } = require("./public/scripts/ErrorApp.js");
+
 const getData = require("./views/seeds/Movies__seeds.js");
 const session = require("express-session");
 const flash = require("connect-flash");
 const passport = require("passport");
 const passportLocal = require("passport-local");
+const localsVeriables = require("./public/partials/middlewares/localsVeriables.js");
 // const methodOverride = require("method-override");
 // let favourites_option = false;
 let serials = [];
@@ -43,6 +34,7 @@ let name;
 let success = false;
 const checkingData = functions.checkingData;
 // const searchReplicatedByName = functions.searchReplicatedByName;
+
 server.use(
   session({
     name: "serieSearcherSession",
@@ -70,6 +62,7 @@ server.use(methodOverride("_method"));
 server.use(express.urlencoded({ extended: true }));
 
 server.use(checkingData);
+server.use(localsVeriables);
 const initialData = function () {
   serials = [];
   userpassword = "";
@@ -99,8 +92,8 @@ server.get("/home", (req, res) => {
 
   res.render("index", {
     data,
-    genres,
-    countries,
+    // genres,
+    // countries,
     myAccount,
     success: req.flash("success"),
     err: req.flash("error"),
@@ -116,8 +109,8 @@ server.get("/user", (req, res) => {
   const path = req.path;
   res.render("forms", {
     myAccount,
-    countries,
-    genres,
+    // countries,
+    // genres,
     path,
     err: req.flash("error"),
     success: req.flash("success"),
@@ -179,8 +172,8 @@ server.get(
         myAccount = true;
 
         res.render(`index`, {
-          countries,
-          genres,
+          // countries,
+          // genres,
           fullName: userData.username,
           data,
           userData,
@@ -275,8 +268,8 @@ server.get(
           comments: "",
           success: req.flash("success"),
           setSection: false,
-          genres,
-          countries,
+          // genres,
+          // countries,
           favourites,
           serial: "",
           err: "",
@@ -321,8 +314,8 @@ server.get("/myAccount/settings", (req, res) => {
       success: req.flash("success"),
       setSection: true,
       myAccount,
-      genres,
-      countries,
+      // genres,
+      // countries,
       favourites: "",
       serial: "",
       err: "",
@@ -365,8 +358,8 @@ server.get(
       res.render("forms", {
         user,
         myAccount,
-        countries,
-        genres,
+        // countries,
+        // genres,
         path: "update",
         err: "",
         success: req.flash("success"),
@@ -449,8 +442,8 @@ server.get(
         success: req.flash("success"),
         setSection: false,
         myAccount,
-        genres,
-        countries,
+        // genres,
+        // countries,
         favourites: "",
         serial: "",
         err: "",
@@ -470,8 +463,8 @@ server.get(
       res.render("forms", {
         comment,
         myAccount,
-        countries,
-        genres,
+        // countries,
+        // genres,
         path: "updateComment",
         err: "",
         success: req.flash("success"),
@@ -534,8 +527,8 @@ server.get(
           success: req.flash("success"),
           setSection: false,
           myAccount,
-          genres,
-          countries,
+          // genres,
+          // countries,
           favourites: "",
           serial,
           err: "",
@@ -580,8 +573,8 @@ server.get("/register", (req, res) => {
 
   res.render("forms", {
     myAccount,
-    countries,
-    genres,
+    // countries,
+    // genres,
     path,
     err: "",
     success: req.flash("success"),
@@ -643,8 +636,8 @@ server.get(
       res.render("simple", {
         serial,
         serials,
-        genres,
-        countries,
+        // genres,
+        // countries,
         myAccount,
         isFav,
       });
@@ -663,8 +656,8 @@ server.get(
       res.render("forms", {
         comment: "",
         myAccount,
-        countries,
-        genres,
+        // countries,
+        // genres,
         path: "addComment",
         id: req.params.id,
         err: "",
@@ -717,8 +710,8 @@ server.get(
           comments,
           serial,
           myAccount,
-          countries,
-          genres,
+          // countries,
+          // genres,
         });
       } else {
         const data = req.data;
@@ -734,8 +727,8 @@ server.get(
         );
         res.render("index", {
           data,
-          countries,
-          genres,
+          // countries,
+          // genres,
           myAccount,
           success: req.flash("success"),
           err: req.flash("error"),
@@ -757,7 +750,7 @@ server.get("/topSeries", (req, res) => {
 
   const subpage = "Top Series";
 
-  res.render("subpage", { genres, countries, data, subpage, myAccount });
+  res.render("subpage", { data, subpage, myAccount });
 });
 server.get(
   "/:sub/:g",
@@ -777,8 +770,8 @@ server.get(
         const subpage = req.params.g;
         const data = await Movie.find({ [search]: subpage });
         res.render("subpage", {
-          genres,
-          countries,
+          // genres,
+          // countries,
           data,
           subpage,
           myAccount,
