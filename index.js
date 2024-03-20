@@ -8,6 +8,7 @@ const methodOverride = require("method-override");
 const server = express();
 const ejsMate = require("ejs-mate");
 const { appendFileSync } = require("fs");
+const userRouter = require("./views/routers/user.js");
 const {
   ErrorApp,
   errHandler,
@@ -54,6 +55,7 @@ server.use(express.urlencoded({ extended: true }));
 
 server.use(checkingData);
 server.use(localsVeriables);
+server.use("/user", userRouter);
 
 // -----------
 //home
@@ -75,90 +77,90 @@ server.get("/home", (req, res) => {
 // user
 // ----------------
 
-server.get("/user", (req, res) => {
-  const path = req.path;
-  res.render("forms", {
-    path,
-    err: req.flash("error"),
-    // success: req.flash("success"),
-  });
-});
-server.get(
-  "/user/favourite/:id",
-  asyncWrap(async (req, res, next) => {
-    const { id } = req.params;
-    // res.send(`name: ${name}, password: ${userpassword} serial id: ${id}`);
-    const [owner] = await User.find({ _id: req.user._id });
-    const data = req.data;
-    const [serial] = data.filter((element) => {
-      return element._id == id;
-    });
-    if (owner && serial) {
-      if (typeof owner.favMovies == "undefined") {
-        owner.favMovies = [];
-        // owner.favMovies[0] = serial._id; <-- that is 1 vrsion when favMovies stored strings now there is stored objectId  so we store whole serial to populate it when needed:
-        owner.favMovies[0] = serial;
+// server.get("/user", (req, res) => {
+//   const path = req.path;
+//   res.render("forms", {
+//     path,
+//     err: req.flash("error"),
+//     // success: req.flash("success"),
+//   });
+// });
+// server.get(
+//   "/user/favourite/:id",
+//   asyncWrap(async (req, res, next) => {
+//     const { id } = req.params;
+//     // res.send(`name: ${name}, password: ${userpassword} serial id: ${id}`);
+//     const [owner] = await User.find({ _id: req.user._id });
+//     const data = req.data;
+//     const [serial] = data.filter((element) => {
+//       return element._id == id;
+//     });
+//     if (owner && serial) {
+//       if (typeof owner.favMovies == "undefined") {
+//         owner.favMovies = [];
+//         // owner.favMovies[0] = serial._id; <-- that is 1 vrsion when favMovies stored strings now there is stored objectId  so we store whole serial to populate it when needed:
+//         owner.favMovies[0] = serial;
 
-        await owner.save();
-      } else if (!owner.favMovies.includes(serial._id)) {
-        owner.favMovies.push(serial);
+//         await owner.save();
+//       } else if (!owner.favMovies.includes(serial._id)) {
+//         owner.favMovies.push(serial);
 
-        console.log(`serial with id ${serial._id} added to array favMovies`);
-        await owner.save();
-      } else {
-        console.log(
-          `serial with id ${serial._id} is already in array favMovies`
-        );
-      }
-      res.redirect("/myAccount");
-    } else {
-      throw new ErrorApp();
-    }
-  })
-);
-server.get(
-  "/user/:name",
-  asyncWrap(async (req, res, next) => {
-    if (req.isAuthenticated()) {
-      const [userData] = await User.find({ _id: req.user._id });
-      if (userData) {
-        res.render(`index`, {
-          fullName: userData.username,
-          userData,
-          // success: req.flash("success"),
-          err: "",
-        });
-      } else {
-        throw new ErrorApp(
-          "such user doesn't exist try to log in once again",
-          400,
-          "forms"
-        );
-      }
-    } else {
-      throw new ErrorApp("such page doesn't exist", 500);
-    }
-  })
-);
-server.post(
-  "/user",
-  userFormValidator,
-  passport.authenticate("local", {
-    failureFlash: true,
-    failureRedirect: "/user",
-  }),
-  asyncWrap(async (req, res, next) => {
-    const [userExist] = await User.find({ _id: req.user._id });
+//         console.log(`serial with id ${serial._id} added to array favMovies`);
+//         await owner.save();
+//       } else {
+//         console.log(
+//           `serial with id ${serial._id} is already in array favMovies`
+//         );
+//       }
+//       res.redirect("/myAccount");
+//     } else {
+//       throw new ErrorApp();
+//     }
+//   })
+// );
+// server.get(
+//   "/user/:name",
+//   asyncWrap(async (req, res, next) => {
+//     if (req.isAuthenticated()) {
+//       const [userData] = await User.find({ _id: req.user._id });
+//       if (userData) {
+//         res.render(`index`, {
+//           fullName: userData.username,
+//           userData,
+//           // success: req.flash("success"),
+//           err: "",
+//         });
+//       } else {
+//         throw new ErrorApp(
+//           "such user doesn't exist try to log in once again",
+//           400,
+//           "forms"
+//         );
+//       }
+//     } else {
+//       throw new ErrorApp("such page doesn't exist", 500);
+//     }
+//   })
+// );
+// server.post(
+//   "/user",
+//   userFormValidator,
+//   passport.authenticate("local", {
+//     failureFlash: true,
+//     failureRedirect: "/user",
+//   }),
+//   asyncWrap(async (req, res, next) => {
+//     const [userExist] = await User.find({ _id: req.user._id });
 
-    if (userExist) {
-      req.flash("success", "Succesfully logged in");
+//     if (userExist) {
+//       req.flash("success", "Succesfully logged in");
 
-      res.redirect(`/user/${userExist.username}`);
-    } else {
-      throw new ErrorApp("your userdata are incorrect", 401, "forms");
-    }
-  })
-);
+//       res.redirect(`/user/${userExist.username}`);
+//     } else {
+//       throw new ErrorApp("your userdata are incorrect", 401, "forms");
+//     }
+//   })
+// );
 // -----------------------
 // myAccount
 //-----------------------
