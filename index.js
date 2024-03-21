@@ -1,5 +1,5 @@
 const express = require("express");
-const { Movie, User, Review, genres, countries } = require("./dataBase");
+const { User } = require("./dataBase");
 const functions = require("./public/scripts/functions.js");
 const port = 3000;
 const path = require("path");
@@ -7,22 +7,14 @@ const { default: mongoose } = require("mongoose");
 const methodOverride = require("method-override");
 const server = express();
 const ejsMate = require("ejs-mate");
-const { appendFileSync } = require("fs");
 const userRouter = require("./views/routers/user.js");
 const myAccountRouter = require("./views/routers/myAccount.js");
 const registerRouter = require("./views/routers/register.js");
 const serieRouter = require("./views/routers/serie.js");
 const topSeriesRouter = require("./views/routers/topSeries.js");
 const othersRouter = require("./views/routers/others.js");
-const {
-  ErrorApp,
-  errHandler,
-  asyncWrap,
-  registerFormValidator,
-  reviewValidator,
-  userFormValidator,
-  searcherValidator,
-} = require("./public/scripts/ErrorApp.js");
+const homeRouter = require("./views/routers/home.js");
+const { ErrorApp, errHandler } = require("./public/scripts/ErrorApp.js");
 
 const session = require("express-session");
 const flash = require("connect-flash");
@@ -59,6 +51,7 @@ server.use(express.urlencoded({ extended: true }));
 
 server.use(checkingData);
 server.use(localsVeriables);
+server.use("/", homeRouter);
 server.use("/user", userRouter);
 server.use("/myAccount", myAccountRouter);
 server.use("/register", registerRouter);
@@ -69,19 +62,19 @@ server.use("/:sub/:g", othersRouter);
 // -----------
 //home
 //-----------
-server.get("/", (req, res) => {
-  res.redirect("/home");
-});
+// server.get("/", (req, res) => {
+//   res.redirect("/home");
+// });
 
-server.get("/home", (req, res) => {
-  // const data = req.data;
+// server.get("/home", (req, res) => {
+//   // const data = req.data;
 
-  res.render("index", {
-    // success: req.flash("success"),
-    err: req.flash("error"),
-  });
-  // success = success ? false : success;
-});
+//   res.render("index", {
+//     // success: req.flash("success"),
+//     err: req.flash("error"),
+//   });
+//   // success = success ? false : success;
+// });
 // ----------------
 // user
 // ----------------
