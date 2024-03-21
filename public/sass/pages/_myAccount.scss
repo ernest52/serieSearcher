@@ -96,6 +96,7 @@
     flex-basis: 70%;
     @include respond("small") {
       flex-basis: auto;
+      padding-top: 1rem;
     }
     // height: max-content;
     position: relative;
@@ -135,6 +136,9 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        @include respond("small") {
+          margin: 1rem 0;
+        }
       }
     }
   }

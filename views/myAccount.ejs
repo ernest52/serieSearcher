@@ -52,7 +52,18 @@
       }else if(setSection){%>
       <div class="settings">
         <a href="/myAccount/update" class="button--blue">update data</a>
-        <a href="/myAccount/remove" class="button--red">remove account</a>
+        <%# <a href="/myAccount/remove" class="button--red">remove account</a>%>
+        <form
+          action="/myAccount/remove?_method=delete"
+          method="post"
+          class="form-inline button--red"
+        >
+          <input
+            type="submit"
+            value="remove account"
+            class="--u-removeAccount"
+          />
+        </form>
         <%# <a href="#" class="button--green">set details</a> %>
       </div>
       <%}else if(comments){ comments.forEach((comment,index)=>{ %>

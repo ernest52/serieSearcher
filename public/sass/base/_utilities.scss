@@ -6,3 +6,15 @@
   text-transform: capitalize;
   // letter-spacing: 2px;
 }
+
+.--u-removeAccount {
+  font-size: calc(var(--main-font-size) + 1rem);
+  margin: 0 auto;
+  height: 100%;
+  width: 100%;
+  text-transform: capitalize;
+  background-color: inherit;
+  border: none;
+  color: currentColor;
+  cursor: pointer;
+}

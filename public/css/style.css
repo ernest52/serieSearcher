@@ -84,6 +84,17 @@ a {
   font-weight: bold;
   text-transform: capitalize; }
 
+.--u-removeAccount {
+  font-size: calc(var(--main-font-size) + 1rem);
+  margin: 0 auto;
+  height: 100%;
+  width: 100%;
+  text-transform: capitalize;
+  background-color: inherit;
+  border: none;
+  color: currentColor;
+  cursor: pointer; }
+
 .topNav {
   background-color: var(--color-blue-dark);
   display: flex;
@@ -671,7 +682,8 @@ footer {
     position: relative; }
     @media only screen and (max-width: 31.25rem) {
       .myAccount__mainPanel {
-        flex-basis: auto; } }
+        flex-basis: auto;
+        padding-top: 1rem; } }
     .myAccount__mainPanel .movie {
       position: relative; }
     .myAccount__mainPanel .serial {
@@ -697,6 +709,9 @@ footer {
         display: flex;
         justify-content: center;
         align-items: center; }
+        @media only screen and (max-width: 31.25rem) {
+          .myAccount__mainPanel .settings > * {
+            margin: 1rem 0; } }
 
 .review__serial-box {
   border: 2px solid #00bbf0;
