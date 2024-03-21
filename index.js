@@ -10,6 +10,7 @@ const ejsMate = require("ejs-mate");
 const { appendFileSync } = require("fs");
 const userRouter = require("./views/routers/user.js");
 const myAccountRouter = require("./views/routers/myAccount.js");
+const registerRouter = require("./views/routers/register.js");
 const {
   ErrorApp,
   errHandler,
@@ -20,7 +21,6 @@ const {
   searcherValidator,
 } = require("./public/scripts/ErrorApp.js");
 
-const getData = require("./views/seeds/Movies__seeds.js");
 const session = require("express-session");
 const flash = require("connect-flash");
 const passport = require("passport");
@@ -58,6 +58,7 @@ server.use(checkingData);
 server.use(localsVeriables);
 server.use("/user", userRouter);
 server.use("/myAccount", myAccountRouter);
+server.use("/register", registerRouter);
 
 // -----------
 //home
@@ -172,30 +173,30 @@ server.get("/home", (req, res) => {
 //register
 //--------------------
 
-server.get("/register", (req, res) => {
-  const path = req.path;
+// server.get("/register", (req, res) => {
+//   const path = req.path;
 
-  res.render("forms", {
-    path,
-    err: "",
-    // success: req.flash("success"),
-  });
-});
-server.post(
-  "/register",
-  registerFormValidator,
-  asyncWrap(async (req, res) => {
-    const { password, username, mail } = req.body;
-    const newUser = new User({
-      username,
-      mail,
-    });
-    await User.register(newUser, password);
-    await newUser.save();
-    req.flash("success", "user succesfully Added");
-    res.redirect("/home");
-  })
-);
+//   res.render("forms", {
+//     path,
+//     err: "",
+//     // success: req.flash("success"),
+//   });
+// });
+// server.post(
+//   "/register",
+//   registerFormValidator,
+//   asyncWrap(async (req, res) => {
+//     const { password, username, mail } = req.body;
+//     const newUser = new User({
+//       username,
+//       mail,
+//     });
+//     await User.register(newUser, password);
+//     await newUser.save();
+//     req.flash("success", "user succesfully Added");
+//     res.redirect("/home");
+//   })
+// );
 //---------------
 // serie
 //---------------
