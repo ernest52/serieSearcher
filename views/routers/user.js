@@ -2,11 +2,7 @@ const express = require("express");
 const passport = require("passport");
 const Router = express.Router();
 const { User } = require("../../dataBase");
-const {
-  asyncWrap,
-  ErrorApp,
-  userFormValidator,
-} = require("../../public/scripts/ErrorApp");
+const { userFormValidator } = require("../../public/scripts/ErrorApp");
 const {
   LogInForm,
   LogInPost,
