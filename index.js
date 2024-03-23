@@ -22,6 +22,9 @@ const passport = require("passport");
 const passportLocal = require("passport-local");
 const localsVeriables = require("./public/partials/middlewares/localsVeriables.js");
 // let success = false;
+if (process.env.NODE__ENV !== "production") {
+  require("dotenv").config();
+}
 const checkingData = functions.checkingData;
 server.use(
   session({

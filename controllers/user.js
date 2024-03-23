@@ -12,7 +12,10 @@ module.exports.LogInPost = asyncWrap(async (req, res, next) => {
   const [userExist] = await User.find({ _id: req.user._id });
 
   if (userExist) {
-    req.flash("success", "Succesfully logged in");
+    req.flash(
+      "success",
+      `Succesfully logged in. Welcome back:${userExist.username}`
+    );
 
     res.redirect(`/user/${userExist.username}`);
   } else {
