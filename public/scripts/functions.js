@@ -160,16 +160,21 @@ async function checkingData(req, res, next) {
     data = await Movie.find();
     if (typeof data[0] !== "undefined") {
       // console.log(`data length: ${data.length}`);
-      req.data = data;
+      // const skowron = data.filter((element) => element.image);
+      // const index = skowron.findIndex((ele) => !ele.image);
+      // console.log(`skowron[0]: ${skowron[0]} index: ${index}`);
+      req.data = data.filter((element) => element.image);
       next();
     } else {
       // init(req,next);
-      req.data = await init();
+      const data = await init();
+      req.data = data.filter((element) => element.image);
       next();
     }
   } else {
     // init(req,next);
-    req.data = await init();
+    const data = await init();
+    req.data = data.filter((element) => element.image);
     next();
   }
 }
