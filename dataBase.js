@@ -2,8 +2,13 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 const dB = "movieBooking";
 const passportLocalMongoose = require("passport-local-mongoose");
+if (process.env.NODE__ENV !== "production") {
+  require("dotenv").config();
+}
+const db_URL = process.env.DB_URL || `mongodb://127.0.0.1:27017/${dB}`;
+
 mongoose
-  .connect(`mongodb://127.0.0.1:27017/${dB}`)
+  .connect(db_URL)
   .then(() => {
     console.log("Connected with DB:", dB);
   })

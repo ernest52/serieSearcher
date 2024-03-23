@@ -121,14 +121,14 @@
       }
     }
     & .settings {
-      height: 50%;
+      // height: 50%;
       width: 70%;
       margin: 0 auto;
       // background-color: pink;
       display: flex;
       flex-direction: column;
       // align-items: center;
-      justify-content: space-around;
+      // justify-content: space-around;
       font-size: calc(#{var(--main-font-size)} + 1rem);
       text-transform: capitalize;
       & > * {
@@ -136,9 +136,11 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        @include respond("small") {
-          margin: 1rem 0;
-        }
+        padding: 1rem;
+        margin: 1rem 0;
+        // @include respond("small") {
+        //   margin: 1rem 0;
+        // }
       }
     }
   }

@@ -15,21 +15,26 @@ const topSeriesRouter = require("./views/routers/topSeries.js");
 const othersRouter = require("./views/routers/others.js");
 const homeRouter = require("./views/routers/home.js");
 const { ErrorApp, errHandler } = require("./public/scripts/ErrorApp.js");
-
+const MongoStore = require("connect-mongo");
 const session = require("express-session");
 const flash = require("connect-flash");
 const passport = require("passport");
 const passportLocal = require("passport-local");
 const localsVeriables = require("./public/partials/middlewares/localsVeriables.js");
+const mongoSanitize = require("express-mongo-sanitize");
+const helmet = require("helmet");
 // let success = false;
 if (process.env.NODE__ENV !== "production") {
   require("dotenv").config();
 }
 const checkingData = functions.checkingData;
+const secret = process.env.SECRET;
+const DB_URL = process.env.DB_URL;
 server.use(
   session({
     name: "serieSearcherSession",
-    secret: "alongsecret aside",
+    store: MongoStore.create({ mongoUrl: DB_URL }),
+    secret,
     resave: false,
     saveUninitialized: true,
     cookie: {
@@ -51,6 +56,13 @@ server.set("views", path.join(__dirname + "/views"));
 server.use(express.static("public"));
 server.use(methodOverride("_method"));
 server.use(express.urlencoded({ extended: true }));
+server.use(mongoSanitize());
+server.use(
+  helmet({
+    contentSecurityPolicy: false,
+    xDownloadOptions: false,
+  })
+);
 
 server.use(checkingData);
 server.use(localsVeriables);
