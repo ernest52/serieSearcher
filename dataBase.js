@@ -10,7 +10,7 @@ const db_URL = process.env.DB_URL || `mongodb://127.0.0.1:27017/${dB}`;
 mongoose
   .connect(db_URL)
   .then(() => {
-    console.log("Connected with DB:", dB);
+    console.log("Connected with DB:", db_URL);
   })
   .catch((err) => {
     console.log("Error with connection: ", err);
